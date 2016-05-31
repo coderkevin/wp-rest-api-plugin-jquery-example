@@ -64,6 +64,7 @@ class REST_API_Plugin_JQuery_Example {
 			'i18n' => array(
 				'post'       => __( 'Post', $text_domain ),
 				'author'     => __( 'Author', $text_domain ),
+				'sticky'     => __( 'Sticky', $text_domain ),
 				'loading'    => __( '(loading)', $text_domain ),
 			)
 		) );

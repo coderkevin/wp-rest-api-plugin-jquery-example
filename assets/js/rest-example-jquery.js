@@ -3,17 +3,18 @@ jQuery( function( $ ) {
 
 	var g_users = {};
 	var g_posts = [];
+	var g_searchTimeout = null;
 
 	// Updates the search box message.
 	var updateMessage = function( text ) {
 		$( '#search-message' ).text( text );
-	}
+	};
 
 	// Regenerates the table based on the current globals.
 	var regenerateTable = function() {
 		var newTable = generateTable( g_posts, g_users );
 		$( '#post-table' ).replaceWith( newTable );
-	}
+	};
 
 	// Creates a new table to display post results.
 	var generateTable = function( posts, users ) {
@@ -28,6 +29,7 @@ jQuery( function( $ ) {
 		var headerRow = $( '<tr/>' ).appendTo( table );
 		$( '<th/>', { text: i18n.post } ).appendTo( headerRow );
 		$( '<th/>', { text: i18n.author } ).appendTo( headerRow );
+		$( '<th/>', { text: i18n.sticky } ).appendTo( headerRow );
 
 		// For each post, create a row.
 		posts.filter( function( post ) {
@@ -47,10 +49,21 @@ jQuery( function( $ ) {
 				'href': author.link,
 				text: author.name
 			} ).appendTo( authorCell );
+
+			// Sticky
+			var stickyCell = $( '<td/>' ).appendTo( row );
+			var stickyInput = $( '<input/>', {
+				'type': 'checkbox',
+			} ).appendTo( stickyCell );
+			stickyInput.prop( 'checked', post.sticky );
+
+			stickyInput.on( 'change', function( evt ) {
+				toggleSticky( post, stickyInput );
+			} );
 		} );
 
 		return table;
-	}
+	};
 
 	// Returns the ids which aren't in the users list.
 	var filterUnfetchedUsers = function( ids, users ) {
@@ -65,7 +78,7 @@ jQuery( function( $ ) {
 		}
 
 		return unfetched;
-	}
+	};
 
 	// Fetches the users which aren't in the users list, then adds them to it.
 	var fetchUsers = function( ids, users ) {
@@ -81,7 +94,7 @@ jQuery( function( $ ) {
 			users[ id ] = {
 				name: '?',
 				link: '#'
-			}
+			};
 		} );
 
 		// Fetch those unfetched users.
@@ -103,17 +116,46 @@ jQuery( function( $ ) {
 			},
 			cache: false
 		} );
-	}
+	};
 
+	var toggleSticky = function( post, checkbox ) {
+		var sticky = ! post.sticky;
+		checkbox.prop( 'disabled', true );
 
-	var timeout = null;
+		$.ajax( {
+			url: screen_data.api_root + 'wp/v2/posts/' + post.id,
+			method: 'POST',
+			beforeSend: function( req ) {
+				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
+			},
+			data: {
+				'sticky': sticky
+			},
+			success: function( data ) {
+				// Update the global state
+				g_posts[ data.id ] = data;
+			},
+			error: function( req ) {
+				console.error( 'error on sticky update' );
+				console.error( req );
+			},
+			complete: function() {
+				// Either way, make sure the checkbox matches.
+				var sticky = g_posts[ post.id ].sticky;
+				if ( sticky !== checkbox.prop( 'checked' ) ) {
+					checkbox.prop( 'checked', g_posts[ post.id ].sticky );
+				}
+				checkbox.prop( 'disabled', false );
+			}
+		} );
+	};
 
 	var clearTimeout = function() {
-		if ( timeout ) {
-			window.clearTimeout( timeout );
-			timeout = null;
+		if ( g_searchTimeout ) {
+			window.clearTimeout( g_searchTimeout );
+			g_searchTimeout = null;
 		}
-	}
+	};
 
 	var searchPosts = function() {
 		updateMessage( screen_data.i18n.loading );
@@ -137,16 +179,16 @@ jQuery( function( $ ) {
 			},
 			cache: false
 		} );
-	}
+	};
 
 	// Automatically search for what's in the text box
 	// if it sits for long enough.
 	$( '#search-box' ).on( 'input', function( evt ) {
 		clearTimeout();
 
-		timeout = window.setTimeout( function() {
+		g_searchTimeout = window.setTimeout( function() {
 			searchPosts();
-			timeout = null;
+			g_searchTimeout = null;
 		}, 500 );
 	} );
 
