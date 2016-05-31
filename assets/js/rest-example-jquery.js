@@ -4,6 +4,11 @@ jQuery( function( $ ) {
 	var g_users = {};
 	var g_posts = [];
 
+	// Updates the search box message.
+	var updateMessage = function( text ) {
+		$( '#search-message' ).text( text );
+	}
+
 	// Regenerates the table based on the current globals.
 	var regenerateTable = function() {
 		var newTable = generateTable( g_posts, g_users );
@@ -19,7 +24,7 @@ jQuery( function( $ ) {
 		fetchUsers( authorIds, users );
 
 		// Create the table and headers.
-		var table = $( '<table/>', { 'id': 'post-table', 'class': 'search' } );
+		var table = $( '<table/>', { 'id': 'post-table' } );
 		var headerRow = $( '<tr/>' ).appendTo( table );
 		$( '<th/>', { text: i18n.post } ).appendTo( headerRow );
 		$( '<th/>', { text: i18n.author } ).appendTo( headerRow );
@@ -100,11 +105,25 @@ jQuery( function( $ ) {
 		} );
 	}
 
-	$( document ).ready( function() {
-		regenerateTable();
+
+	var timeout = null;
+
+	var clearTimeout = function() {
+		if ( timeout ) {
+			window.clearTimeout( timeout );
+			timeout = null;
+		}
+	}
+
+	var searchPosts = function() {
+		updateMessage( screen_data.i18n.loading );
+
+		var text = $( '#search-box' ).val();
+		var apiString = 'wp/v2/posts?' +
+			              'search=' + encodeURIComponent( text );
 
 		$.ajax( {
-			url: screen_data.api_root + 'wp/v2/posts',
+			url: screen_data.api_root + apiString,
 			success: function( data ) {
 				g_posts = data;
 				regenerateTable();
@@ -113,8 +132,29 @@ jQuery( function( $ ) {
 				console.error( 'error on request' );
 				console.error( req );
 			},
+			complete: function() {
+				updateMessage( '' );
+			},
 			cache: false
 		} );
+	}
+
+	// Automatically search for what's in the text box
+	// if it sits for long enough.
+	$( '#search-box' ).on( 'input', function( evt ) {
+		clearTimeout();
+
+		timeout = window.setTimeout( function() {
+			searchPosts();
+			timeout = null;
+		}, 500 );
+	} );
+
+	// Immediately search when the form is submitted (i.e. <ENTER> key )
+	$( '#search-form' ).on( 'submit', function( evt ) {
+		evt.preventDefault();
+		clearTimeout();
+		searchPosts();
 	} );
 
 } );

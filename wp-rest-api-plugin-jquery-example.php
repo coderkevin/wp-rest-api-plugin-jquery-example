@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) or die( 'No direct access.' );
 class REST_API_Plugin_JQuery_Example {
 
 	const VERSION = '0.1.0';
+	const TEXT_DOMAIN = 'rest-api-plugin-jquery-example';
 
 	public function __construct() {
 		// Add an Admin Menu for our plugin.
@@ -45,6 +46,7 @@ class REST_API_Plugin_JQuery_Example {
 	}
 
 	public function output_page() {
+		$text_domain = REST_API_Plugin_JQuery_Example::TEXT_DOMAIN;
 
 		wp_enqueue_script( 'jquery' );
 
@@ -60,16 +62,25 @@ class REST_API_Plugin_JQuery_Example {
 			'api_root' => esc_url_raw( rest_url() ),
 			'api_nonce' => wp_create_nonce( 'wp_rest' ),
 			'i18n' => array(
-				'post'       => __( "Post", 'rest-api-plugin-jquery-example' ),
-				'author'     => __( "Author", 'rest-api-plugin-jquery-example' ),
+				'post'       => __( 'Post', $text_domain ),
+				'author'     => __( 'Author', $text_domain ),
+				'loading'    => __( '(loading)', $text_domain ),
 			)
 		) );
 
 ?>
-	<div>
+	<div class="rest-api-example">
 		<h1>REST API Plugin Example Using jQuery</h1>
 		<p>This is the example page for using the REST API from a plugin using jQuery!</p>
-		<div id="example-post-list">
+		<div id="post-search">
+			<form id="search-form" class="search">
+				<label>
+					<?php echo __( 'Search Posts:', $text_domain ) ?>
+					<input id="search-box" type="search"></input>
+				</label>
+				<span id="search-message"></span>
+			</form>
+
 			<table id="post-table">
 			</table>
 		</div>
