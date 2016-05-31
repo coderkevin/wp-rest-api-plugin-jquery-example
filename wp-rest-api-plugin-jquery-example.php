@@ -70,6 +70,8 @@ class REST_API_Plugin_JQuery_Example {
 		<h1>REST API Plugin Example Using jQuery</h1>
 		<p>This is the example page for using the REST API from a plugin using jQuery!</p>
 		<div id="example-post-list">
+			<table id="post-table">
+			</table>
 		</div>
 	</div>
 <?php
