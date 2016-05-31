@@ -1,13 +1,15 @@
 
 jQuery( function( $ ) {
 
-	var generateTable = function( data ) {
+	var generateTable = function( posts ) {
+		var i18n = screen_data.i18n;
+
 		var table = $( '<table/>', { 'class': 'search' } );
 		var headerRow = $( '<tr/>' ).appendTo( table );
-		$( '<th/>', { text: 'Post' } ).appendTo( headerRow );
-		$( '<th/>', { text: 'Author' } ).appendTo( headerRow );
+		$( '<th/>', { text: i18n.post } ).appendTo( headerRow );
+		$( '<th/>', { text: i18n.author } ).appendTo( headerRow );
 
-		data.filter( function( post ) {
+		posts.filter( function( post ) {
 			var row = $( '<tr/>' ).appendTo( table );
 
 			var titleCell = $( '<td/>' ).appendTo( row );

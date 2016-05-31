@@ -59,6 +59,10 @@ class REST_API_Plugin_JQuery_Example {
 		wp_localize_script( 'rest-api-plugin-jquery-example-js', 'screen_data', array(
 			'api_root' => esc_url_raw( rest_url() ),
 			'api_nonce' => wp_create_nonce( 'wp_rest' ),
+			'i18n' => array(
+				'post'       => __( "Post", 'rest-api-plugin-jquery-example' ),
+				'author'     => __( "Author", 'rest-api-plugin-jquery-example' ),
+			)
 		) );
 
 ?>
