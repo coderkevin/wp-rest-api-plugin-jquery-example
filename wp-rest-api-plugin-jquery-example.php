@@ -57,6 +57,7 @@ class REST_API_Plugin_JQuery_Example {
 		);
 
 		wp_localize_script( 'rest-api-plugin-jquery-example-js', 'screen_data', array(
+			'api_root' => esc_url_raw( rest_url() ),
 			'api_nonce' => wp_create_nonce( 'wp_rest' ),
 		) );
 
@@ -64,6 +65,8 @@ class REST_API_Plugin_JQuery_Example {
 	<div>
 		<h1>REST API Plugin Example Using jQuery</h1>
 		<p>This is the example page for using the REST API from a plugin using jQuery!</p>
+		<div id="example-post-list">
+		</div>
 	</div>
 <?php
 	}
