@@ -82,6 +82,7 @@ jQuery( function( $ ) {
 		stickyInput.on( 'change', function( evt ) {
 			stickyInput.prop( 'disabled', true );
 			var props = {
+				title: post.title.rendered + '.', // NOTE: Testing purposes only! Remove after done.
 				sticky: (! post.sticky)
 			};
 			updatePost( post, props );
@@ -150,6 +151,12 @@ jQuery( function( $ ) {
 			method: 'POST',
 			beforeSend: function( req ) {
 				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
+				req.setRequestHeader( 'Accept', 'application/json' );
+
+				// NOTE: If Content-Type is set to this on 2.0-beta13.1, updates don't work.
+				//       However, for both master and development branches it's required because
+				//       you get an error if you send form data.
+				//req.setRequestHeader( 'Content-Type', 'application/json' );
 			},
 			data: props,
 			success: function( data ) {
