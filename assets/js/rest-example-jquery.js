@@ -61,7 +61,7 @@ jQuery( function( $ ) {
 		var titleCell = $( '<td/>' ).appendTo( row );
 		$( '<a/>', {
 			'href': post.link,
-			text: post.title.rendered
+			html: post.title.rendered
 		} ).appendTo( titleCell );
 
 		// Post Author
@@ -69,7 +69,7 @@ jQuery( function( $ ) {
 		var authorCell = $( '<td/>' ).appendTo( row );
 		$( '<a/>', {
 			'href': author.link,
-			text: author.name
+			html: author.name
 		} ).appendTo( authorCell );
 
 		// Sticky
@@ -80,7 +80,11 @@ jQuery( function( $ ) {
 		stickyInput.prop( 'checked', post.sticky );
 
 		stickyInput.on( 'change', function( evt ) {
-			toggleSticky( post, stickyInput );
+			stickyInput.prop( 'disabled', true );
+			var props = {
+				sticky: (! post.sticky)
+			};
+			updatePost( post, props );
 		} );
 
 		return row;
@@ -139,10 +143,7 @@ jQuery( function( $ ) {
 		} );
 	};
 
-	// Toggles the sticky state of a post.
-	var toggleSticky = function( post, checkbox ) {
-		var sticky = ! post.sticky;
-		checkbox.prop( 'disabled', true );
+	var updatePost = function( post, props ) {
 
 		$.ajax( {
 			url: screen_data.api_root + 'wp/v2/posts/' + post.id,
@@ -150,9 +151,7 @@ jQuery( function( $ ) {
 			beforeSend: function( req ) {
 				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
 			},
-			data: {
-				'sticky': sticky
-			},
+			data: props,
 			success: function( data ) {
 				// Update the global state
 				regeneratePost( data );
