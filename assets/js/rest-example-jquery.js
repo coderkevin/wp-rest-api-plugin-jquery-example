@@ -16,6 +16,19 @@ jQuery( function( $ ) {
 		$( '#post-table' ).replaceWith( newTable );
 	};
 
+	// Regenerates a single updated post.
+	var regeneratePost = function( updatedPost ) {
+		g_posts.filter( function( post ) {
+			if ( post.id === updatedPost.id ) {
+				var index = g_posts.indexOf( post );
+				g_posts[ index ] = updatedPost;
+			}
+		} );
+
+		var row = generatePostRow( updatedPost, g_users );
+		$( 'tr[key="' + updatedPost.id + '"]' ).replaceWith( row );
+	};
+
 	// Creates a new table to display post results.
 	var generateTable = function( posts, users ) {
 		var i18n = screen_data.i18n;
@@ -33,37 +46,45 @@ jQuery( function( $ ) {
 
 		// For each post, create a row.
 		posts.filter( function( post ) {
-			var row = $( '<tr/>' ).appendTo( table );
-
-			// Post Title
-			var titleCell = $( '<td/>' ).appendTo( row );
-			$( '<a/>', {
-				'href': post.link,
-				text: post.title.rendered
-			} ).appendTo( titleCell );
-
-			// Post Author
-			var author = users[ post.author.toString() ];
-			var authorCell = $( '<td/>' ).appendTo( row );
-			$( '<a/>', {
-				'href': author.link,
-				text: author.name
-			} ).appendTo( authorCell );
-
-			// Sticky
-			var stickyCell = $( '<td/>' ).appendTo( row );
-			var stickyInput = $( '<input/>', {
-				'type': 'checkbox',
-			} ).appendTo( stickyCell );
-			stickyInput.prop( 'checked', post.sticky );
-
-			stickyInput.on( 'change', function( evt ) {
-				toggleSticky( post, stickyInput );
-			} );
+			var row = generatePostRow( post, users );
+			row.appendTo( table );
 		} );
 
 		return table;
 	};
+
+	// Creates a new TR element for a post.
+	var generatePostRow = function( post, users ) {
+		var row = $( '<tr/>', { 'key': post.id } );
+
+		// Post Title
+		var titleCell = $( '<td/>' ).appendTo( row );
+		$( '<a/>', {
+			'href': post.link,
+			text: post.title.rendered
+		} ).appendTo( titleCell );
+
+		// Post Author
+		var author = users[ post.author.toString() ];
+		var authorCell = $( '<td/>' ).appendTo( row );
+		$( '<a/>', {
+			'href': author.link,
+			text: author.name
+		} ).appendTo( authorCell );
+
+		// Sticky
+		var stickyCell = $( '<td/>' ).appendTo( row );
+		var stickyInput = $( '<input/>', {
+			'type': 'checkbox',
+		} ).appendTo( stickyCell );
+		stickyInput.prop( 'checked', post.sticky );
+
+		stickyInput.on( 'change', function( evt ) {
+			toggleSticky( post, stickyInput );
+		} );
+
+		return row;
+	}
 
 	// Returns the ids which aren't in the users list.
 	var filterUnfetchedUsers = function( ids, users ) {
@@ -118,6 +139,7 @@ jQuery( function( $ ) {
 		} );
 	};
 
+	// Toggles the sticky state of a post.
 	var toggleSticky = function( post, checkbox ) {
 		var sticky = ! post.sticky;
 		checkbox.prop( 'disabled', true );
@@ -133,23 +155,18 @@ jQuery( function( $ ) {
 			},
 			success: function( data ) {
 				// Update the global state
-				g_posts[ data.id ] = data;
+				regeneratePost( data );
 			},
 			error: function( req ) {
 				console.error( 'error on sticky update' );
 				console.error( req );
-			},
-			complete: function() {
-				// Either way, make sure the checkbox matches.
-				var sticky = g_posts[ post.id ].sticky;
-				if ( sticky !== checkbox.prop( 'checked' ) ) {
-					checkbox.prop( 'checked', g_posts[ post.id ].sticky );
-				}
-				checkbox.prop( 'disabled', false );
+				// Reset the post to its previous state.
+				regeneratePost( post );
 			}
 		} );
 	};
 
+	// Clears the search timeout.
 	var clearTimeout = function() {
 		if ( g_searchTimeout ) {
 			window.clearTimeout( g_searchTimeout );
@@ -157,6 +174,7 @@ jQuery( function( $ ) {
 		}
 	};
 
+	// Sends an API call to search for posts.
 	var searchPosts = function() {
 		updateMessage( screen_data.i18n.loading );
 
