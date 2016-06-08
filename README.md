@@ -3,14 +3,15 @@
 The goal of this code is to be the most succinct, easy-to-understand JavaScript
 example of using the WordPress REST API.
 
-[More info about the REST API here.](http://v2.wp-api.org)
+[More information about the REST API.](http://v2.wp-api.org)
 
 ## Client-side (within the browser)
 
 All API calls are done from within your browser. This means you can use it to
-make rich web apps that load data in the background, and even offload so many
-page hits from your server. All while giving the the impression of a
-faster-loading user experience.
+make rich web apps that load data in the background, and even offload many
+page hits from your server, decreasing your server load. All of this,
+while being more responsive and giving the the impression of a faster-loading
+user experience.
 
 ## It uses jQuery
 
@@ -29,23 +30,25 @@ make your own WordPress plugin with a rich client experience.
 ## Public and Authenticated calls
 
 There are examples of public calls and ones that use cookie/nonce authentication.
-[More info about authentication here](http://v2.wp-api.org/guide/authentication/)
+
+[More info about authentication.](http://v2.wp-api.org/guide/authentication/)
 
 
 ## Bonus: Multiple Language Support!
 
-Given that we all tend pattern greatly off of example code, I've added support
-to this plugin for Internationalization (i18n) in an attempt to contribute to
-folks making their plugins i18n-ready. When you use code similar to the i18n
-code I've added to this plugin, it will allow someone who installs
-your plugin to add translation files for different languages and have all
-strings translated within the plugin (including JavaScript code!)
+Given that we all tend to pattern greatly off of example code, I've added support
+to this plugin for [Internationalization (i18n).](https://en.wikipedia.org/wiki/Internationalization_and_localization)
+This is to encourage folks to make their plugins i18n-ready.
+When you write your own code similar to the i18n code I've added to this plugin,
+it will allow someone who installs your plugin to add translation files
+for different languages and have all strings translated within the plugin
+(including JavaScript code!)
 
-This does add a little bit of complexity to the code, but it's well worth it.
+While this does add a little bit of complexity to the code, it's well worth it.
 WordPress is a very international software platform, so we should all do what
 we can to make our plugins accessible to the non-English speaking community!
 
-Visit [here for more information about i18n in WordPress.](https://codex.wordpress.org/I18n_for_WordPress_Developers)
+[More information about i18n in WordPress](https://codex.wordpress.org/I18n_for_WordPress_Developers)
 
 ### How to use:
 
