@@ -1,6 +1,7 @@
 
 jQuery( function( $ ) {
 
+	var POST_STATUS = [ 'publish', 'future', 'draft', 'pending', 'private' ];
 	var g_users = {};
 	var g_posts = [];
 	var g_searchTimeout = null;
@@ -42,7 +43,7 @@ jQuery( function( $ ) {
 		var headerRow = $( '<tr/>' ).appendTo( table );
 		$( '<th/>', { text: i18n.post } ).appendTo( headerRow );
 		$( '<th/>', { text: i18n.author } ).appendTo( headerRow );
-		$( '<th/>', { text: i18n.sticky } ).appendTo( headerRow );
+		$( '<th/>', { text: i18n.status } ).appendTo( headerRow );
 
 		// For each post, create a row.
 		posts.filter( function( post ) {
@@ -55,6 +56,7 @@ jQuery( function( $ ) {
 
 	// Creates a new TR element for a post.
 	var generatePostRow = function( post, users ) {
+		var i18n = screen_data.i18n;
 		var row = $( '<tr/>', { 'key': post.id } );
 
 		// Post Title
@@ -72,19 +74,23 @@ jQuery( function( $ ) {
 			html: author.name
 		} ).appendTo( authorCell );
 
-		// Sticky
-		var stickyCell = $( '<td/>' ).appendTo( row );
-		var stickyInput = $( '<input/>', {
-			'type': 'checkbox',
-		} ).appendTo( stickyCell );
-		stickyInput.prop( 'checked', post.sticky );
-
-		stickyInput.on( 'change', function( evt ) {
-			stickyInput.prop( 'disabled', true );
-			var props = {
-				sticky: (! post.sticky)
-			};
-			updatePost( post, props );
+		// Status
+		var statusCell = $( '<td/>' ).appendTo( row );
+		var statusSelect = $( '<select/>' ).appendTo( statusCell );
+		POST_STATUS.filter( function( value ) {
+			var opt = $( '<option/>', {
+				'value': value,
+				text: i18n[ value ],
+				'selected': ( post.status == value )
+			} ).appendTo( statusSelect );
+		} );
+		statusSelect.on( 'change', function( evt ) {
+			var selected = $( 'option:selected', this );
+			var newStatus = ( selected.length ? selected[0].value : null );
+			if ( newStatus ) {
+				statusSelect.prop( 'disabled', true ); // This will be regenerated
+				updatePost( post, { status: newStatus } );
+			}
 		} );
 
 		return row;
@@ -157,7 +163,7 @@ jQuery( function( $ ) {
 				regeneratePost( data );
 			},
 			error: function( req ) {
-				console.error( 'error on sticky update' );
+				console.error( 'error on post update' );
 				console.error( req );
 				// Reset the post to its previous state.
 				regeneratePost( post );
@@ -179,16 +185,22 @@ jQuery( function( $ ) {
 
 		var text = $( '#search-box' ).val();
 		var apiString = 'wp/v2/posts?' +
+										'context=edit&per_page=100&' +
+										'status=' + POST_STATUS.toString() + '&' +
 			              'search=' + encodeURIComponent( text );
 
 		$.ajax( {
 			url: screen_data.api_root + apiString,
+			beforeSend: function( req ) {
+				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
+			},
 			success: function( data ) {
 				g_posts = data;
 				regenerateTable();
+				// TODO: Fetch users here instead of in regenerateTable()
 			},
 			error: function( req ) {
-				console.error( 'error on request' );
+				console.error( 'error on posts request' );
 				console.error( req );
 			},
 			complete: function() {
@@ -206,7 +218,7 @@ jQuery( function( $ ) {
 		g_searchTimeout = window.setTimeout( function() {
 			searchPosts();
 			g_searchTimeout = null;
-		}, 500 );
+		}, 250 );
 	} );
 
 	// Immediately search when the form is submitted (i.e. <ENTER> key )

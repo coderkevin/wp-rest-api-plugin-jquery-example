@@ -64,7 +64,12 @@ class REST_API_Plugin_JQuery_Example {
 			'i18n' => array(
 				'post'       => __( 'Post', $text_domain ),
 				'author'     => __( 'Author', $text_domain ),
-				'sticky'     => __( 'Sticky', $text_domain ),
+				'status'     => __( 'Status', $text_domain ),
+				'publish'    => __( 'Published', $text_domain ),
+				'future'     => __( 'Scheduled', $text_domain ),
+				'draft'      => __( 'Draft', $text_domain ),
+				'pending'    => __( 'Pending Review', $text_domain ),
+				'private'    => __( 'Private', $text_domain ),
 				'loading'    => __( '(loading)', $text_domain ),
 			)
 		) );
