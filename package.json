@@ -1,0 +1,28 @@
+{
+  "name": "wp-rest-api-plugin-jquery-example",
+  "description": "Example code for WordPress REST API v2 using jQuery in a plugin.",
+  "version": "1.0.0",
+  "author": "Kevin Killingsworth (https://github.com/coderkevin)",
+  "license": "GPL-3.0+",
+  "homepage": "https://github.com/coderkevin/wp-rest-api-plugin-jquery-example#readme",
+  "keywords": [
+    "wordpress",
+    "rest",
+    "api",
+    "jquery"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coderkevin/wp-rest-api-plugin-jquery-example.git"
+  },
+  "bugs": {
+    "url": "https://github.com/coderkevin/wp-rest-api-plugin-jquery-example/issues"
+  },
+	"main": "Gruntfile.js",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-wp-i18n": "^0.5.4"
+  }
+}

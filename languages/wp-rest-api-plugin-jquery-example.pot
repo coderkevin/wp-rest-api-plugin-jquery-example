@@ -1,0 +1,83 @@
+# Copyright (C) 2016 Kevin Killingsworth
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: REST API Plugin - JQuery Example 0.1.0\n"
+"Report-Msgid-Bugs-To: "
+"https://github.com/coderkevin/wp-rest-api-plugin-jquery-example/issues\n"
+"POT-Creation-Date: 2016-06-08 18:18:19+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+
+#: wp-rest-api-plugin-jquery-example.php:66
+msgid "REST API Plugin Example Using jQuery"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:67
+msgid "REST API Example"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:96
+msgid "Post"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:97
+msgid "Author"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:98
+msgid "Status"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:99
+msgid "Published"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:100
+msgid "Scheduled"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:101
+msgid "Draft"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:102
+msgid "Pending Review"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:103
+msgid "Private"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:104
+msgid "(loading)"
+msgstr ""
+
+#: wp-rest-api-plugin-jquery-example.php:115
+msgid "Search Posts:"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "REST API Plugin - JQuery Example"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/coderkevin/wp-rest-api-plugin-jquery-example"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Example code for using the WordPress REST API in a plugin"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Kevin Killingsworth"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/coderkevin"
+msgstr ""
