@@ -58,3 +58,46 @@ Whenever you add a new translate string, you'll need to re-generate the .pot fil
  2. Install grunt-cli if you haven't already: `npm install -g grunt-cli`
  3. Run `grunt makepot` to generate the new .pot file.
 
+## Things intentionally not covered here
+
+### Search Result Pagination
+
+When you do a REST API call to get a list of things like posts, pages, users, etc.
+you don't get all of them if there are a lot to be had. You'll want to get only as
+many as you need to display, and then either show links to more pages, or you can
+dynamically load more as you scroll.
+
+I didn't add this because I wanted to focus the code on the initial API calls, and
+folks will likely want to implement pagination in their own way.
+
+### Minifying
+
+For a real plugin, you'll want to [minify](https://en.wikipedia.org/wiki/Minification_(programming))
+your JavaScript via a build system such as
+[Grunt](http://gruntjs.com/),
+[Gulp](http://gulpjs.com/),
+[Webpack](https://webpack.github.io),
+[Browserify](http://browserify.org/),
+or perhaps another way.
+
+As you can see, there are many ways to do this, so I leave it up as an exercise
+for the viewer.
+
+### Linting
+
+[Linting](https://en.wikipedia.org/wiki/Lint_(software)) is a process that checks
+your code for syntax and formatting issues. It's a really good idea to do this
+in a project that matters. You can plug in
+[ESLint](http://eslint.org/) or [JSHint](http://jshint.com/) easily using whatever
+build system you choose above.
+
+### Unit Testing
+
+[Unit Testing](https://en.wikipedia.org/wiki/Unit_testing) is another practice
+that helps you write and maintain solid code.
+
+[Mocha](https://mochajs.org/) and [Jasmine](http://jasmine.github.io/) are the
+most popular JavaScript testing frameworks as of this writing, and
+[PHPUnit](https://phpunit.de/) is most widely used for PHP code.
+
+
