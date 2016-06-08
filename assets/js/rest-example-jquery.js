@@ -34,10 +34,6 @@ jQuery( function( $ ) {
 	var generateTable = function( posts, users ) {
 		var i18n = screen_data.i18n;
 
-		// Get all of the authors for the posts we're showing.
-		var authorIds = posts.map( function( post ) { return post.author.toString(); } );
-		fetchUsers( authorIds, users );
-
 		// Create the table and headers.
 		var table = $( '<table/>', { 'id': 'post-table' } );
 		var headerRow = $( '<tr/>' ).appendTo( table );
@@ -123,7 +119,7 @@ jQuery( function( $ ) {
 		// Set default values while we fetch.
 		unfetchedUsers.filter( function( id ) {
 			users[ id ] = {
-				name: '?',
+				name: screen_data.i18n.loading,
 				link: '#'
 			};
 		} );
@@ -134,6 +130,9 @@ jQuery( function( $ ) {
 										'per_page=' + unfetchedUsers.length;
 		$.ajax( {
 			url: screen_data.api_root + apiString,
+			cache: false,
+
+			// On success, assign user to list.
 			success: function( data ) {
 				data.filter( function( user ) {
 					users[ user.id ] = user;
@@ -141,6 +140,8 @@ jQuery( function( $ ) {
 
 				regenerateTable();
 			},
+
+			// On error, in a real app, display an error message to user.
 			error: function( req ) {
 				console.error( 'error on users request' );
 				console.error( req );
@@ -158,10 +159,13 @@ jQuery( function( $ ) {
 				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
 			},
 			data: props,
+
+			// On success, update just this post.
 			success: function( data ) {
-				// Update the global state
 				regeneratePost( data );
 			},
+
+			// On error, in a real app, display an error message to user.
 			error: function( req ) {
 				console.error( 'error on post update' );
 				console.error( req );
@@ -194,24 +198,33 @@ jQuery( function( $ ) {
 			beforeSend: function( req ) {
 				req.setRequestHeader( 'X-WP-Nonce', screen_data.api_nonce );
 			},
+			cache: false,
+
+			// On success, replace the global post list and update the entire table.
 			success: function( data ) {
 				g_posts = data;
+
+				// Get all of the authors for the posts we're about to show.
+				var authorIds = g_posts.map( function( post ) { return post.author.toString(); } );
+				fetchUsers( authorIds, g_users );
+
 				regenerateTable();
-				// TODO: Fetch users here instead of in regenerateTable()
 			},
+
+			// On error, in a real app, display an error message to user.
 			error: function( req ) {
 				console.error( 'error on posts request' );
 				console.error( req );
 			},
+
+			// Regardless of success/error, clear our (loading) message.
 			complete: function() {
 				updateMessage( '' );
-			},
-			cache: false
+			}
 		} );
 	};
 
-	// Automatically search for what's in the text box
-	// if it sits for long enough.
+	// Automatically search for what's in the text box if it sits long enough.
 	$( '#search-box' ).on( 'input', function( evt ) {
 		clearTimeout();
 
