@@ -54,7 +54,7 @@ class REST_API_Plugin_JQuery_Example {
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		$mo_file = $domain . '-' . get_locale() . '.mo';
 
-		load_textdomain( $domain, WP_LANG_DIR . '/' + $domain + '/' . $mo_file );
+		load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $mo_file );
 		load_plugin_textdomain( $domain, false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
@@ -62,11 +62,9 @@ class REST_API_Plugin_JQuery_Example {
 	 * Attaches the admin menu we'll use for our plugin.
 	 */
 	public function attach_menu() {
-		$domain = REST_API_Plugin_JQuery_Example::TEXT_DOMAIN;
-
 		add_menu_page(
-			__( 'REST API Plugin Example Using jQuery', $domain ),
-			__( 'REST API Example', $domain ),
+			__( 'REST API Plugin Example Using jQuery', 'rest-api-plugin-jquery-example' ),
+			__( 'REST API Example', 'rest-api-plugin-jquery-example' ),
 			'read',
 			'rest-api-plugin-jquery-example',
 			array( $this, 'output_page' ),
@@ -79,8 +77,6 @@ class REST_API_Plugin_JQuery_Example {
 	 * Outputs the scripts and html for our page.
 	 */
 	public function output_page() {
-		$domain = REST_API_Plugin_JQuery_Example::TEXT_DOMAIN;
-
 		wp_enqueue_script( 'jquery' );
 
 		wp_enqueue_script(
@@ -95,26 +91,26 @@ class REST_API_Plugin_JQuery_Example {
 			'api_root' => esc_url_raw( rest_url() ),
 			'api_nonce' => wp_create_nonce( 'wp_rest' ),
 			'i18n' => array(
-				'post'       => __( 'Post', $domain ),
-				'author'     => __( 'Author', $domain ),
-				'status'     => __( 'Status', $domain ),
-				'publish'    => __( 'Published', $domain ),
-				'future'     => __( 'Scheduled', $domain ),
-				'draft'      => __( 'Draft', $domain ),
-				'pending'    => __( 'Pending Review', $domain ),
-				'private'    => __( 'Private', $domain ),
-				'loading'    => __( '(loading)', $domain ),
+				'post'       => __( 'Post',           'rest-api-plugin-jquery-example' ),
+				'author'     => __( 'Author',         'rest-api-plugin-jquery-example' ),
+				'status'     => __( 'Status',         'rest-api-plugin-jquery-example' ),
+				'publish'    => __( 'Published',      'rest-api-plugin-jquery-example' ),
+				'future'     => __( 'Scheduled',      'rest-api-plugin-jquery-example' ),
+				'draft'      => __( 'Draft',          'rest-api-plugin-jquery-example' ),
+				'pending'    => __( 'Pending Review', 'rest-api-plugin-jquery-example' ),
+				'private'    => __( 'Private',        'rest-api-plugin-jquery-example' ),
+				'loading'    => __( '(loading)',      'rest-api-plugin-jquery-example' ),
 			)
 		) );
 
 		?>
 			<div class="rest-api-example">
-				<h1><?php _e( 'REST API Plugin Example Using jQuery', $domain ) ?></h1>
-				<p><?php _e( 'This is the example page for using the REST API from a plugin using jQuery!', $domain ) ?></p>
+				<h1><?php _e( 'REST API Plugin Example Using jQuery', 'rest-api-plugin-jquery-example' ) ?></h1>
+				<p><?php _e( 'This is the example page for using the REST API from a plugin using jQuery!', 'rest-api-plugin-jquery-example' ) ?></p>
 				<div id="post-search">
 					<form id="search-form" class="search">
 						<label>
-							<?php _e( 'Search Posts:', $domain ) ?>
+							<?php _e( 'Search Posts:', 'rest-api-plugin-jquery-example' ) ?>
 							<input id="search-box" type="search"></input>
 						</label>
 						<span id="search-message"></span>
