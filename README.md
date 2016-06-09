@@ -79,6 +79,13 @@ dynamically load more as you scroll.
 I didn't add this because I wanted to focus the code on the initial API calls, and
 folks will likely want to implement pagination in their own way.
 
+#### Post Statuses
+
+There's actually a [REST API call to get the list of possible Statuses.](http://v2.wp-api.org/reference/statuses/)
+However, this would clutter up the example more, without really adding much
+functionality. However, If I were to do something like this in a real plugin,
+I would definitely fetch the statuses before using them.
+
 #### Minifying
 
 For a real plugin, you'll want to [minify](https://en.wikipedia.org/wiki/Minification_(programming))
