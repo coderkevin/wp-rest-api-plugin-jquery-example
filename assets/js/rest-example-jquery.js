@@ -145,8 +145,7 @@ jQuery( function( $ ) {
 			error: function( req ) {
 				console.error( 'error on users request' );
 				console.error( req );
-			},
-			cache: false
+			}
 		} );
 	};
 
