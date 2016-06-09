@@ -98,7 +98,7 @@ jQuery( function( $ ) {
 
 		for ( var i in ids ) {
 			var id = ids[ i ];
-			if ( unfetched.indexOf( id ) == -1 &&
+			if ( unfetched.indexOf( id ) === -1 &&
 					 ! users.hasOwnProperty( id ) ) {
 				unfetched.push( id );
 			}

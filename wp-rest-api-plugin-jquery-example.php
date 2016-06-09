@@ -29,7 +29,7 @@ class REST_API_Plugin_JQuery_Example {
 	const TEXT_DOMAIN = 'rest-api-plugin-jquery-example';
 
 	public function __construct() {
-		add_action( 'init', array( $this, 'init' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 	}
 
 	/**
