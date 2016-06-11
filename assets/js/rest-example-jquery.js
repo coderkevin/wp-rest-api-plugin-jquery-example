@@ -35,8 +35,9 @@ jQuery( function( $ ) {
 		var i18n = screen_data.i18n;
 
 		// Create the table and headers.
-		var table = $( '<table/>', { 'id': 'post-table' } );
-		var headerRow = $( '<tr/>' ).appendTo( table );
+		var table = $( '<table/>', { 'id': 'post-table', 'class': 'widefat' } );
+		var tableHeader = $( '<thead/>' ).appendTo( table );
+		var headerRow = $( '<tr/>' ).appendTo( tableHeader );
 		$( '<th/>', { text: i18n.post } ).appendTo( headerRow );
 		$( '<th/>', { text: i18n.author } ).appendTo( headerRow );
 		$( '<th/>', { text: i18n.status } ).appendTo( headerRow );
