@@ -77,12 +77,10 @@ class REST_API_Plugin_JQuery_Example {
 	 * Outputs the scripts and html for our page.
 	 */
 	public function output_page() {
-		wp_enqueue_script( 'jquery' );
-
 		wp_enqueue_script(
 			'rest-api-plugin-jquery-example-js',
 			plugins_url( 'assets/js/rest-example-jquery.js', __FILE__ ),
-			array(),
+			array( 'jquery' ),
 			REST_API_Plugin_JQuery_Example::VERSION,
 			true
 		);
